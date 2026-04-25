@@ -1,5 +1,5 @@
 <p align="center">
-  # EclipseMenu
+  <h1> EclipseMenu </h1>
 </p>
 <p align="center">
   <b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.</b>
