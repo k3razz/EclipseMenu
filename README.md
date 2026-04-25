@@ -25,7 +25,7 @@
 
 ## 🪟 Windows
 
-1. Download the latest **MalumMenu zip pack** from [here](https://github.com/k3razz/EclipseMenu/releases/latest).
+1. Download the latest **EclipseMenu zip pack** from [here](https://github.com/k3razz/EclipseMenu/releases/latest).
     - **For Steam or Itch.io:** Download `EclipseMenu-VERSION=steam=itchio.zip`.
 
 2. Open the zip file you have just downloaded and copy all its contents.
@@ -41,7 +41,7 @@
 
 5. Wait for the console window to finish the installation.
 
-6. After installation, Among Us will automatically open with MalumMenu successfully installed.
+6. After installation, Among Us will automatically open with EclipseMenu successfully installed.
     - By default, you can toggle the cheat GUI on by pressing **DELETE** on your keyboard.
 
 7. If the installation doesn't work, check out our [FAQ](#-faq).
@@ -53,7 +53,7 @@
 
    - Test different Proton versions if you're having issues launching the game.
 
-2. Set up **BepInEx** (the framework MalumMenu is built upon).
+2. Set up **BepInEx** (the framework EclipseMenu is built upon).
    - Follow the official Proton / Wine setup guide found [here](https://docs.bepinex.dev/articles/advanced/proton_wine.html).
    - If you are using Proton with Steam, specify the DLL override:
      - **In Steam:** Right-click Among Us in your Library → Click `Properties` → Click `General` → Click `Launch Options`.
@@ -91,7 +91,7 @@ Click to expand each topic
 
 <details>
 
-<summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
+<summary><h2>❗ I'm having issues installing EclipseMenu</h2></summary>
 
 First of all, make sure you are running the most recent version of Among Us (`17.3` / `2026.4.1`, `17.2.2` / `2026.3.17` OR `17.2.1` / `2026.2.24`) with the most recent version of EclipseMenu (`v1.1.9`).
 
@@ -111,7 +111,7 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 
 <br>Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
 
-When installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completely normal and expected behavior, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through this useful BepInEx console window that pops up when you start the game:
+When installing EclipseMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completely normal and expected behavior, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through this useful BepInEx console window that pops up when you start the game:
 
 <br>If you are still having issues, feel free to open a new Github issue [here](https://github.com/k3razz/EclipseMenu/issues/new), or you can ask for help in our Discord server: [will be soon].
 
