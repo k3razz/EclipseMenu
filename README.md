@@ -1,5 +1,5 @@
 <p align="center">
-  <h1>EclipseMenu</h1>
+  <img src="https://github.com/k3razz/EclipseMenu/blob/main/img/logo.png">
 </p>
 
 <!-- <a href="https://github.com/k3razz/EclipseMenu/releases">
