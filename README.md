@@ -2,9 +2,9 @@
   <h1>EclipseMenu</h1>
 </p>
 
-<a href="https://github.com/k3razz/EclipseMenu/releases">
+/*<a href="https://github.com/k3razz/EclipseMenu/releases">
     <img hspace="6" src="https://img.shields.io/github/downloads/k3razz/EclipseMenu/total?style=flat&logo=github&label=Total%20Downloads&color=2ECC71" alt="Downloads">
-  </a>
+  </a>*/
 
 <p align="center">
   <b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.</b>
