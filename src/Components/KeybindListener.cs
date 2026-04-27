@@ -6,21 +6,51 @@ public class KeybindListener : MonoBehaviour
 {
     public void Update()
     {
-        if (EclipseMenu.isPanicked) return;
+        if (EclipseMenu.isPanicked)
+            return;
 
-        // Keybinds aren't triggered from typing in the chat
-        if (HudManager.InstanceExists && HudManager.Instance.Chat && HudManager.Instance.Chat.IsOpenOrOpening) return;
+        if (IsTypingInChat())
+            return;
 
-        // Check each keybind to see if the user pressed it and toggle the corresponding cheat
-        foreach (var (name, key) in CheatToggles.Keybinds)
+        ProcessKeybinds();
+    }
+
+    private bool IsTypingInChat()
+    {
+        if (!HudManager.InstanceExists)
+            return false;
+
+        var chat = HudManager.Instance.Chat;
+
+        if (chat == null)
+            return false;
+
+        return chat.IsOpenOrOpening;
+    }
+
+    private void ProcessKeybinds()
+    {
+        foreach (var entry in CheatToggles.Keybinds)
         {
-            if (key == KeyCode.None) continue;
-            if (!Input.GetKeyDown(key)) continue;
+            var name = entry.Key;
+            var key = entry.Value;
 
-            if (!CheatToggles.ToggleFields.TryGetValue(name, out var field)) continue;
+            if (key == KeyCode.None)
+                continue;
 
-            var current = (bool)field.GetValue(null);
-            field.SetValue(null, !current);
+            if (!Input.GetKeyDown(key))
+                continue;
+
+            if (!CheatToggles.ToggleFields.TryGetValue(name, out var field))
+                continue;
+
+            ToggleField(field);
         }
+    }
+
+    private void ToggleField(System.Reflection.FieldInfo field)
+    {
+        bool currentValue = (bool)field.GetValue(null);
+        field.SetValue(null, !currentValue);
     }
 }
