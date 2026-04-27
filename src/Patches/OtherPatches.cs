@@ -160,7 +160,6 @@ public static class PingTracker_Update
         if (EclipseMenu.inStealthMode)
         {
             __instance.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
-
             return;
         }
 
@@ -169,17 +168,17 @@ public static class PingTracker_Update
         int ping = Utils.GetPing();
         string pingText = Utils.GetColoredPingText($"PING: {ping} ms", ping);
 
+        string fpsText = FPSOverlay.GetFPS();
+        string extra = string.IsNullOrEmpty(fpsText) ? "" : $" | {fpsText}";
+
         if (AmongUsClient.Instance.IsGameStarted)
         {
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
-
-            __instance.text.text = $"EclipseMenu by kerazz ~ {pingText}";
-
+            __instance.text.text = $"EclipseMenu by kerazz ~ {pingText}{extra}";
             return;
         }
 
-        __instance.text.text = $"EclipseMenu by kerazz\n{pingText}";
-
+        __instance.text.text = $"EclipseMenu by kerazz\n{pingText}{extra}";
     }
 }
 
