@@ -81,7 +81,7 @@
 # 📋 Features
 
 <p align="center">
-  <img src="https://https://github.com/k3razz/EclipseMenu/main/img/features.png">
+  <img src="https://https://github.com/k3razz/EclipseMenu/blob/main/img/features.png">
 </p>
 
 - An intuitive GUI with our latest, greatest Among Us cheats
