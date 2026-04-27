@@ -80,6 +80,10 @@
 
 # 📋 Features
 
+<p align="center">
+  <img src="https://https://github.com/k3razz/EclipseMenu/blob/main/img/showcase.jpg">
+</p>
+
 - An intuitive GUI with our latest, greatest Among Us cheats
 - See ghosts & reveal the impostors
 - Track every player's position using the minimap
