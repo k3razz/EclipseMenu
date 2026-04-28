@@ -22,7 +22,7 @@
 - [⚠️ Disclaimer](#️-disclaimer)
 
 # 🎁 Releases
-## Currently porting to ImGui. Updates doesnt will be released. Status: 7%
+## Currently porting to ImGui. Updates doesnt will be released.
 
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
