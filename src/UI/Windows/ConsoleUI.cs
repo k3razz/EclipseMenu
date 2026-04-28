@@ -17,7 +17,6 @@ public class ConsoleUI : MonoBehaviour
 
     private void Start()
     {
-        // Instantiate 2D area of ConsoleUI
         _windowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
