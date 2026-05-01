@@ -11,6 +11,9 @@ public static class EclipseESP
 
     public static string PlayerColorDot(Color color)
     {
+        if (!CheatToggles.showPlayerDots) // <-- добавь такой toggle
+          return "";
+
         string hexColor = ColorUtility.ToHtmlStringRGB(color);
         return $"<size=80%><color=#{hexColor}>●</color></size>";
     }
@@ -225,14 +228,15 @@ public static class EclipseESP
 
     public static void FreecamCheat()
     {
-        Camera cam = Camera.main.GetComponent<FollowerCamera>();
+        Camera cam = Camera.main;
+        FollowerCamera follower = cam.GetComponent<FollowerCamera>();
 
         if (CheatToggles.freecam)
         {
             if (!_freecamActive)
             {
-                cam.enabled = false;
-                cam.Target = null;
+                follower.enabled = false;
+                follower.Target = null;
                 _freecamActive = true;
             }
 
@@ -243,18 +247,18 @@ public static class EclipseESP
                 Input.GetAxis("Vertical"),
                 0f
             );
-
-            Camera.main.transform.position += move * (10f * Time.deltaTime);
+    
+            cam.transform.position += move * (10f * Time.deltaTime);
         }
         else
         {
             if (!_freecamActive)
                 return;
-
+    
             PlayerControl.LocalPlayer.moveable = true;
-
-            cam.enabled = true;
-            cam.SetTarget(PlayerControl.LocalPlayer);
+    
+            follower.enabled = true;
+            follower.SetTarget(PlayerControl.LocalPlayer);
 
             _freecamActive = false;
         }
