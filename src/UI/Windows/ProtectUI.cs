@@ -35,7 +35,7 @@ public class ProtectUI : MonoBehaviour
         _windowRect = GUI.Window(
             (int)WindowId.ProtectUI,
             _windowRect,
-            ProtectWindow,
+            (GUI.WindowFunction)((id) => ProtectWindow(id)),
             "Protect Players"
         );
     }
