@@ -162,7 +162,7 @@ public struct CheatToggles
     public static bool avoidPenalties;
     public static bool copyLobbyCodeOnDisconnect;
     public static bool spoofAprilFoolsDate;
-    public static bool FPSOverlay;
+    public static bool showFPS;
 
     // Modes
     public static bool rgbMode;
