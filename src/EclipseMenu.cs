@@ -28,7 +28,7 @@ public partial class EclipseMenu : BasePlugin
     public static ProtectUI protectUI;
     public static KeybindListener keybindListener;
 
-    public static string EclipseVersion = "1.3.8";
+    public static string EclipseVersion = "1.4.2";
     public static List<string> supportedAU = new List<string> { "2026.3.31" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
