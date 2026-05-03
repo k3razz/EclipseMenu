@@ -168,4 +168,4 @@ Usage of this mod can violate the terms of service of Among Us, which may lead t
 
 # ♥ Thanks
 
-Thanks to [MalumMenu](https://github.com/scp222thj/MalumMenu), thanks to which EclipseMenu exists.
+Thanks to [MalumMenu](https://github.com/scp222thj/MalumMenu), for the existence of EclipseMenu.
