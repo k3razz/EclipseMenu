@@ -11,7 +11,7 @@ public static class EclipseESP
 
     public static string PlayerColorDot(Color color)
     {
-        if (!CheatToggles.showPlayerDots) // <-- добавь такой toggle
+        if (!CheatToggles.showPlayerDots)
           return "";
 
         string hexColor = ColorUtility.ToHtmlStringRGB(color);

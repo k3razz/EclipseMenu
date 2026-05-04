@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "f4m7zSHyjhsCuTp/R64ijRMuV4RAdp5jyaKLA4i0QZLTmGGnGrnvdro+lg+8KAHjn3TMHN/uKjqEldC1itawOQ==",
+  "dgSpecHash": "lTEDjTwQ8MA=",
   "success": true,
-  "projectFilePath": "D:\\Саша\\eclipse\\1.2.1\\src\\EclipseMenu.csproj",
+  "projectFilePath": "C:\\Users\\Саша\\Documents\\GitHub\\EclipseMenu\\src\\EclipseMenu.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Саша\\.nuget\\packages\\amongus.gamelibs.steam\\2026.3.31\\amongus.gamelibs.steam.2026.3.31.nupkg.sha512",
     "C:\\Users\\Саша\\.nuget\\packages\\asmresolver\\6.0.0-beta.1\\asmresolver.6.0.0-beta.1.nupkg.sha512",
