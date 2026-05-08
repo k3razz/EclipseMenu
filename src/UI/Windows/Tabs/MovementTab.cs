@@ -24,8 +24,6 @@ public class MovementTab : ITab
     {
         CheatToggles.noClip = GUILayout.Toggle(CheatToggles.noClip, " NoClip");
 
-        CheatToggles.invertControls = GUILayout.Toggle(CheatToggles.invertControls, " Invert Controls");
-
         try
         {
             if (PlayerControl.LocalPlayer.Data.IsDead)

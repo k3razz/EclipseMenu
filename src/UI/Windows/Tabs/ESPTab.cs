@@ -48,7 +48,7 @@ public class ESPTab : ITab
         CheatToggles.revealVotes = GUILayout.Toggle(CheatToggles.revealVotes, " Reveal Votes");
 
         CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
-        CheatToggles.showPlayerDots = GUILayout.Toggle(CheatToggles.showPlayerDots, " Show Player Dots");
+        CheatToggles.showPlayerDots = GUILayout.Toggle(CheatToggles.showPlayerDots, " Show Color Dots");
     }
 
     private void DrawCamera()
@@ -70,13 +70,10 @@ public class ESPTab : ITab
 
         CheatToggles.tracersImps = GUILayout.Toggle(CheatToggles.tracersImps, " Impostors");
 
-        CheatToggles.tracersGhosts = GUILayout.Toggle(CheatToggles.tracersGhosts, " Ghosts");
-
         CheatToggles.tracersBodies = GUILayout.Toggle(CheatToggles.tracersBodies, " Dead Bodies");
 
         CheatToggles.colorBasedTracers = GUILayout.Toggle(CheatToggles.colorBasedTracers, " Color-based");
 
-        CheatToggles.distanceBasedTracers = GUILayout.Toggle(CheatToggles.distanceBasedTracers, " Distance-based");
     }
 
     private void DrawMinimap()
@@ -87,7 +84,7 @@ public class ESPTab : ITab
 
         CheatToggles.mapImps = GUILayout.Toggle(CheatToggles.mapImps, " Impostors");
 
-        CheatToggles.mapGhosts = GUILayout.Toggle(CheatToggles.mapGhosts, " Ghosts");
+//        CheatToggles.mapGhosts = GUILayout.Toggle(CheatToggles.mapGhosts, " Ghosts");
 
         CheatToggles.colorBasedMap = GUILayout.Toggle(CheatToggles.colorBasedMap, " Color-based");
     }

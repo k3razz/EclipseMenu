@@ -11,9 +11,6 @@ public static class EclipseESP
 
     public static string PlayerColorDot(Color color)
     {
-        if (!CheatToggles.showPlayerDots)
-          return "";
-
         string hexColor = ColorUtility.ToHtmlStringRGB(color);
         return $"<size=80%><color=#{hexColor}>●</color></size>";
     }
@@ -119,11 +116,14 @@ public static class EclipseESP
                     continue;
 
                 Color color = Palette.PlayerColors[data.DefaultOutfit.ColorId];
-                string dot = PlayerColorDot(color);
+
+                string prefix = CheatToggles.showPlayerDots
+                    ? PlayerColorDot(color) + " "
+                    : "";
 
                 string name = Utils.GetNameTag(data, data.DefaultOutfit.PlayerName);
 
-                playerState.NameText.text = dot + " " + name;
+                playerState.NameText.text = prefix + name;
 
                 ApplyMeetingNameLayout(playerState.NameText.transform);
             }
@@ -158,10 +158,13 @@ public static class EclipseESP
             string name = playerPhysics.myPlayer.CurrentOutfit.PlayerName;
 
             Color color = Palette.PlayerColors[data.DefaultOutfit.ColorId];
-            string dot = PlayerColorDot(color);
+
+            string prefix = CheatToggles.showPlayerDots
+                ? PlayerColorDot(color) + " "
+                : "";
 
             playerPhysics.myPlayer.cosmetics.SetName(
-                dot + " " + Utils.GetNameTag(data, name)
+                prefix + Utils.GetNameTag(data, name)
             );
 
             ApplyPlayerNameLayout(playerPhysics.myPlayer.cosmetics.nameText.transform);
@@ -184,7 +187,10 @@ public static class EclipseESP
         try
         {
             Color color = Palette.PlayerColors[chatBubble.playerInfo.DefaultOutfit.ColorId];
-            string dot = PlayerColorDot(color);
+
+            string prefix = CheatToggles.showPlayerDots
+                ? PlayerColorDot(color) + " "
+                : "";
 
             string name = Utils.GetNameTag(
                 chatBubble.playerInfo,
@@ -192,7 +198,7 @@ public static class EclipseESP
                 true
             );
 
-            chatBubble.NameText.text = dot + " " + name;
+            chatBubble.NameText.text = prefix + name;
 
             chatBubble.NameText.ForceMeshUpdate(true, true);
 
@@ -247,16 +253,16 @@ public static class EclipseESP
                 Input.GetAxis("Vertical"),
                 0f
             );
-    
+
             cam.transform.position += move * (10f * Time.deltaTime);
         }
         else
         {
             if (!_freecamActive)
                 return;
-    
+
             PlayerControl.LocalPlayer.moveable = true;
-    
+
             follower.enabled = true;
             follower.SetTarget(PlayerControl.LocalPlayer);
 
@@ -272,11 +278,6 @@ public static class EclipseESP
         _deltaTime += (Time.unscaledDeltaTime - _deltaTime) * 0.1f;
 
         int fps = Mathf.CeilToInt(1.0f / _deltaTime);
-
-        Color fpsColor =
-            fps >= 60 ? Color.white :
-            fps >= 30 ? Color.yellow :
-            Color.red;
 
         string text = $"{fps} FPS";
 
