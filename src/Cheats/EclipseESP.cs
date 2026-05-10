@@ -1,5 +1,7 @@
 using UnityEngine;
 using Sentry.Internal.Extensions;
+using TMPro;
+using System.Linq;
 
 namespace EclipseMenu;
 
@@ -7,98 +9,91 @@ public static class EclipseESP
 {
     private static bool _freecamActive;
     private static bool _resolutionChangeNeeded;
-    private static float _deltaTime;
 
-    public static string PlayerColorDot(Color color)
+    private static Rect _hostRect;
+
+    public static string PlayerColorDot(int colorId)
     {
+        if (!CheatToggles.showPlayerDots)
+            return "";
+
+        Color color = Palette.PlayerColors[colorId];
+
         string hexColor = ColorUtility.ToHtmlStringRGB(color);
-        return $"<size=80%><color=#{hexColor}>●</color></size>";
+
+        return $"<size=80%><color=#{hexColor}>●</color></size> ";
     }
 
     public static void SporeCloudVision(Mushroom mushroom)
     {
-        Vector3 current = mushroom.sporeMask.transform.position;
-
-        float targetZ = CheatToggles.noShadows ? -1f : 5f;
+        if (CheatToggles.noShadows)
+        {
+            mushroom.sporeMask.transform.position = new Vector3(
+                mushroom.sporeMask.transform.position.x,
+                mushroom.sporeMask.transform.position.y,
+                -1
+            );
+            return;
+        }
 
         mushroom.sporeMask.transform.position = new Vector3(
-            current.x,
-            current.y,
-            targetZ
+            mushroom.sporeMask.transform.position.x,
+            mushroom.sporeMask.transform.position.y,
+            5f
         );
     }
 
     public static bool IsFullbrightActive()
     {
-        Camera cam = Camera.main;
-        var follower = cam.GetComponent<FollowerCamera>();
-
-        bool shadowsDisabled = CheatToggles.noShadows;
-        bool zoomedOut = cam.orthographicSize > 3f;
-        bool notFollowingPlayer = follower.Target != PlayerControl.LocalPlayer;
-
-        return shadowsDisabled || zoomedOut || notFollowingPlayer;
+        return CheatToggles.noShadows ||
+               Camera.main.orthographicSize > 3f ||
+               Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
     }
 
     public static void ZoomOut(HudManager hudManager)
     {
-        if (!CheatToggles.zoomOut)
+        if (CheatToggles.zoomOut)
         {
-            ResetZoom(hudManager);
-            return;
-        }
+            if (hudManager.Chat.IsOpenOrOpening ||
+                PlayerCustomizationMenu.Instance ||
+                (Utils.isLobby &&
+                (FriendsListUI.Instance.IsOpen ||
+                 GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active ||
+                 GameStartManager.Instance.RulesEditPanel)))
+                return;
 
-        bool chatOpen = hudManager.Chat.IsOpenOrOpening;
-        bool customization = PlayerCustomizationMenu.Instance != null;
+            _resolutionChangeNeeded = true;
 
-        bool lobbyBlock =
-            Utils.isLobby &&
-            (
-                FriendsListUI.Instance.IsOpen ||
-                GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active ||
-                GameStartManager.Instance.RulesEditPanel.active
-            );
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        if (chatOpen || customization || lobbyBlock)
-            return;
+            Camera cam = Camera.main;
 
-        _resolutionChangeNeeded = true;
+            if (scroll < 0f)
+            {
+                cam.orthographicSize++;
+                hudManager.UICamera.orthographicSize++;
+            }
+            else if (scroll > 0f)
+            {
+                if (cam.orthographicSize <= 3f)
+                    return;
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
+                cam.orthographicSize--;
+                hudManager.UICamera.orthographicSize--;
+            }
 
-        if (scroll == 0f)
-            return;
-
-        Camera cam = Camera.main;
-
-        if (scroll < 0f)
-        {
-            cam.orthographicSize++;
-            hudManager.UICamera.orthographicSize++;
+            Utils.AdjustResolution();
         }
         else
         {
-            if (cam.orthographicSize <= 3f)
-                return;
+            Camera.main.orthographicSize = 3f;
+            hudManager.UICamera.orthographicSize = 3f;
 
-            cam.orthographicSize--;
-            hudManager.UICamera.orthographicSize--;
-        }
-
-        Utils.AdjustResolution();
-    }
-
-    private static void ResetZoom(HudManager hudManager)
-    {
-        Camera cam = Camera.main;
-
-        cam.orthographicSize = 3f;
-        hudManager.UICamera.orthographicSize = 3f;
-
-        if (_resolutionChangeNeeded)
-        {
-            Utils.AdjustResolution();
-            _resolutionChangeNeeded = false;
+            if (_resolutionChangeNeeded)
+            {
+                Utils.AdjustResolution();
+                _resolutionChangeNeeded = false;
+            }
         }
     }
 
@@ -110,105 +105,70 @@ public static class EclipseESP
             {
                 var data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
-                if (data.IsNull() ||
-                    data.Disconnected ||
-                    data.Outfits[PlayerOutfitType.Default].IsNull())
+                if (data.IsNull() || data.Disconnected || data.Outfits[PlayerOutfitType.Default].IsNull())
                     continue;
 
-                Color color = Palette.PlayerColors[data.DefaultOutfit.ColorId];
+                playerState.NameText.text =
+                    PlayerColorDot(data.DefaultOutfit.ColorId) +
+                    Utils.GetNameTag(data, data.DefaultOutfit.PlayerName);
 
-                string prefix = CheatToggles.showPlayerDots
-                    ? PlayerColorDot(color) + " "
-                    : "";
-
-                string name = Utils.GetNameTag(data, data.DefaultOutfit.PlayerName);
-
-                playerState.NameText.text = prefix + name;
-
-                ApplyMeetingNameLayout(playerState.NameText.transform);
+                if (CheatToggles.seeRoles && CheatToggles.seePlayerInfo)
+                {
+                    playerState.NameText.transform.localPosition = new Vector3(0.33f, 0.08f, 0f);
+                    playerState.NameText.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                }
+                else if (CheatToggles.seeRoles || CheatToggles.seePlayerInfo)
+                {
+                    playerState.NameText.transform.localPosition = new Vector3(0.3384f, 0.1125f, -0.1f);
+                    playerState.NameText.transform.localScale = new Vector3(0.9f, 1f, 1f);
+                }
+                else
+                {
+                    playerState.NameText.transform.localPosition = new Vector3(0.3384f, 0.0311f, -0.1f);
+                    playerState.NameText.transform.localScale = new Vector3(0.9f, 1f, 1f);
+                }
             }
         }
         catch { }
-    }
-
-    private static void ApplyMeetingNameLayout(Transform t)
-    {
-        if (CheatToggles.seeRoles && CheatToggles.seePlayerInfo)
-        {
-            t.localPosition = new Vector3(0.33f, 0.08f, 0f);
-            t.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-        }
-        else if (CheatToggles.seeRoles || CheatToggles.seePlayerInfo)
-        {
-            t.localPosition = new Vector3(0.3384f, 0.1125f, -0.1f);
-            t.localScale = new Vector3(0.9f, 1f, 1f);
-        }
-        else
-        {
-            t.localPosition = new Vector3(0.3384f, 0.0311f, -0.1f);
-            t.localScale = new Vector3(0.9f, 1f, 1f);
-        }
     }
 
     public static void PlayerNametags(PlayerPhysics playerPhysics)
     {
         try
         {
-            var data = playerPhysics.myPlayer.Data;
-            string name = playerPhysics.myPlayer.CurrentOutfit.PlayerName;
-
-            Color color = Palette.PlayerColors[data.DefaultOutfit.ColorId];
-
-            string prefix = CheatToggles.showPlayerDots
-                ? PlayerColorDot(color) + " "
-                : "";
-
             playerPhysics.myPlayer.cosmetics.SetName(
-                prefix + Utils.GetNameTag(data, name)
+                PlayerColorDot(playerPhysics.myPlayer.Data.DefaultOutfit.ColorId) +
+                Utils.GetNameTag(
+                    playerPhysics.myPlayer.Data,
+                    playerPhysics.myPlayer.CurrentOutfit.PlayerName
+                )
             );
 
-            ApplyPlayerNameLayout(playerPhysics.myPlayer.cosmetics.nameText.transform);
+            if (CheatToggles.seeRoles && CheatToggles.seePlayerInfo)
+                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.186f, 0f);
+            else if (CheatToggles.seeRoles || CheatToggles.seePlayerInfo)
+                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.093f, 0f);
+            else
+                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = Vector3.zero;
         }
         catch { }
-    }
-
-    private static void ApplyPlayerNameLayout(Transform t)
-    {
-        if (CheatToggles.seeRoles && CheatToggles.seePlayerInfo)
-            t.localPosition = new Vector3(0f, 0.186f, 0f);
-        else if (CheatToggles.seeRoles || CheatToggles.seePlayerInfo)
-            t.localPosition = new Vector3(0f, 0.093f, 0f);
-        else
-            t.localPosition = Vector3.zero;
     }
 
     public static void ChatNametags(ChatBubble chatBubble)
     {
         try
         {
-            Color color = Palette.PlayerColors[chatBubble.playerInfo.DefaultOutfit.ColorId];
-
-            string prefix = CheatToggles.showPlayerDots
-                ? PlayerColorDot(color) + " "
-                : "";
-
-            string name = Utils.GetNameTag(
-                chatBubble.playerInfo,
-                chatBubble.NameText.text,
-                true
-            );
-
-            chatBubble.NameText.text = prefix + name;
+            chatBubble.NameText.text =
+                PlayerColorDot(chatBubble.playerInfo.DefaultOutfit.ColorId) +
+                Utils.GetNameTag(chatBubble.playerInfo, chatBubble.NameText.text, true);
 
             chatBubble.NameText.ForceMeshUpdate(true, true);
 
-            float height =
-                chatBubble.NameText.GetNotDumbRenderedHeight() +
-                chatBubble.TextArea.GetNotDumbRenderedHeight();
-
             chatBubble.Background.size = new Vector2(
                 5.52f,
-                0.2f + height
+                0.2f +
+                chatBubble.NameText.GetNotDumbRenderedHeight() +
+                chatBubble.TextArea.GetNotDumbRenderedHeight()
             );
 
             chatBubble.MaskArea.size =
@@ -221,10 +181,8 @@ public static class EclipseESP
     {
         try
         {
-            bool isDead = playerPhysics.myPlayer.Data.IsDead;
-            bool localAlive = !PlayerControl.LocalPlayer.Data.IsDead;
-
-            if (isDead && localAlive)
+            if (playerPhysics.myPlayer.Data.IsDead &&
+                !PlayerControl.LocalPlayer.Data.IsDead)
             {
                 playerPhysics.myPlayer.Visible = CheatToggles.seeGhosts;
             }
@@ -269,33 +227,82 @@ public static class EclipseESP
             _freecamActive = false;
         }
     }
+    
+    private static float _lastPing;
 
-    public static void DrawFPS()
+    public static void DrawHost()
     {
-        if (!CheatToggles.showFPS)
+        if (!CheatToggles.drawHost)
             return;
 
-        _deltaTime += (Time.unscaledDeltaTime - _deltaTime) * 0.1f;
-
-        int fps = Mathf.CeilToInt(1.0f / _deltaTime);
-
-        string text = $"{fps} FPS";
-
-        GUIStyle style = new GUIStyle(GUI.skin.label)
+        try
         {
-            fontSize = 14,
-            normal = { textColor = Color.white }
-        };
+            PlayerControl host = null;
 
-        Vector2 size = style.CalcSize(new GUIContent(text));
+            foreach (var p in PlayerControl.AllPlayerControls)
+            {
+                if (p.OwnerId == AmongUsClient.Instance.HostId)
+                {
+                    host = p;
+                    break;
+                }
+            }
 
-        Rect bg = new Rect(10, 10, size.x + 10, size.y + 6);
-        Rect label = new Rect(15, 13, 200, 30);
+            string hostName =
+                host == null ? "Unknown" :
+                host == PlayerControl.LocalPlayer ? "You" :
+                host.Data.PlayerName;
 
-        GUI.color = new Color(0f, 0f, 0f, 0.6f);
-        GUI.Box(bg, "");
+            string text = $"Host: {hostName}";
 
-        GUI.color = Color.white;
-        GUI.Label(label, text, style);
+            GUIStyle style = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 14,
+            normal = { textColor = Color.white },
+                wordWrap = true,
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            // dynamic size calculation
+            Vector2 textSize = style.CalcSize(new GUIContent(text));
+    
+            float paddingX = 20f;
+            float paddingY = 10f;
+    
+            float width = Mathf.Clamp(textSize.x + paddingX, 120f, 300f);
+            float height = style.CalcHeight(new GUIContent(text), width) + paddingY;
+    
+            // init position only once
+            if (_hostRect == default)
+                _hostRect = new Rect(10, 10, width, height);
+    
+            // update size every frame (important for long names)
+            _hostRect.width = width;
+            _hostRect.height = height;
+    
+            _hostRect = GUI.Window(
+                1337,
+                _hostRect,
+                (GUI.WindowFunction)DrawWindow,
+                ""
+            );
+
+            void DrawWindow(int id)
+            {
+                GUI.color = new Color(0f, 0f, 0f, 0.6f);
+                GUI.Box(new Rect(0, 0, _hostRect.width, _hostRect.height), "");
+
+                GUI.color = Color.white;
+
+                GUI.Label(
+                    new Rect(5, 5, _hostRect.width - 10, _hostRect.height - 10),
+                    text,
+                    style
+                );
+    
+                GUI.DragWindow(new Rect(0, 0, _hostRect.width, _hostRect.height));
+            }
+        }
+        catch { }
     }
 }

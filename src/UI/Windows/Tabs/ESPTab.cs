@@ -48,6 +48,9 @@ public class ESPTab : ITab
         CheatToggles.revealVotes = GUILayout.Toggle(CheatToggles.revealVotes, " Reveal Votes");
 
         CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
+
+        CheatToggles.drawHost = GUILayout.Toggle(CheatToggles.drawHost, " Show Host");
+
         CheatToggles.showPlayerDots = GUILayout.Toggle(CheatToggles.showPlayerDots, " Show Color Dots");
     }
 
