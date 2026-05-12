@@ -26,7 +26,7 @@
 - [⚠️ Disclaimer](#️-disclaimer)
 
 # 🎁 Releases
-## v1.4.3 will be released at 13.05. Pease, be patient.
+## v1.4.3 will be released at 13.05. Please, be patient.
 
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
