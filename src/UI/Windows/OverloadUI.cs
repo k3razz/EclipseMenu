@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace EclipseMenu;
+namespace MalumMenu;
 
 public class OverloadUI : MonoBehaviour
 {
@@ -26,12 +26,12 @@ public class OverloadUI : MonoBehaviour
 
     private void Start()
     {
-        killSwitchThreshold = 500 * EclipseMenu.killSwitchLvl.Value;
+        killSwitchThreshold = 500 * MalumMenu.killSwitchLvl.Value;
 
         if (!CheatToggles.olAutoAdapt)
         {
-            OverloadHandler.strength = EclipseMenu.defaultStrength.Value;
-            OverloadHandler.cooldown = EclipseMenu.defaultCooldown.Value;
+            OverloadHandler.strength = MalumMenu.defaultStrength.Value;
+            OverloadHandler.cooldown = MalumMenu.defaultCooldown.Value;
         }
     }
 
@@ -80,11 +80,11 @@ public class OverloadUI : MonoBehaviour
             }
         }
 
-        // The HashSet swap (currentTargets <-> _tmpTargets) can only be done if AmClient
-        // Otherwise currentTargets gets cleared too early during disconnect with overload on,
+        // The HashSet swap (currentTargets <-> _tmpTargets) can only be done if isPlayer
+        // Otherwise currentTargets gets cleared too early in endgame / disconnect with overload on,
         // causing the STOP message to log the wrong total count
 
-        if (Utils.isClient && AmongUsClient.Instance.AmClient)
+        if (Utils.isPlayer)
         {
             var old = currentTargets;
             currentTargets = _tmpTargets;
@@ -92,9 +92,13 @@ public class OverloadUI : MonoBehaviour
         }
         else
         {
-            // currentTargets is cleared here if STOP log is done / unneeded (overload off)
+            // Targets are cleared here if STOP log is done / unneeded (overload off)
 
-            if (!CheatToggles.runOverload) currentTargets.Clear();
+            if (!CheatToggles.runOverload)
+            {
+                currentTargets.Clear();
+                OverloadHandler.ClearCustomTargets();
+            }
 
             _hasAutoStarted = false;
         }
@@ -136,7 +140,7 @@ public class OverloadUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!CheatToggles.showOverload || !MenuUI.isGUIActive || EclipseMenu.isPanicked) return;
+        if (!CheatToggles.showOverload || !MenuUI.isGUIActive || MalumMenu.isPanicked) return;
 
         InitStyles();
 
