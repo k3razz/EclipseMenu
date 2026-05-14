@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace MalumMenu;
+namespace EclipseMenu;
 
 public class OverloadUI : MonoBehaviour
 {
@@ -26,12 +26,12 @@ public class OverloadUI : MonoBehaviour
 
     private void Start()
     {
-        killSwitchThreshold = 500 * MalumMenu.killSwitchLvl.Value;
+        killSwitchThreshold = 500 * EclipseMenu.killSwitchLvl.Value;
 
         if (!CheatToggles.olAutoAdapt)
         {
-            OverloadHandler.strength = MalumMenu.defaultStrength.Value;
-            OverloadHandler.cooldown = MalumMenu.defaultCooldown.Value;
+            OverloadHandler.strength = EclipseMenu.defaultStrength.Value;
+            OverloadHandler.cooldown = EclipseMenu.defaultCooldown.Value;
         }
     }
 
@@ -140,7 +140,7 @@ public class OverloadUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!CheatToggles.showOverload || !MenuUI.isGUIActive || MalumMenu.isPanicked) return;
+        if (!CheatToggles.showOverload || !MenuUI.isGUIActive || EclipseMenu.isPanicked) return;
 
         InitStyles();
 
