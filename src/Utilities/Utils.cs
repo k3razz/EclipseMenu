@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 using AmongUs.InnerNet.GameDataMessages;
 using Il2CppInterop.Runtime.Injection;
 
-namespace MalumMenu;
+namespace EclipseMenu;
 
 public static class Utils
 {
@@ -676,7 +676,7 @@ public static class Utils
         }
         catch
         {
-            MalumMenu.Log.LogError($"Failed to read Texture: {path}");
+            .Log.LogError($"Failed to read Texture: {path}");
         }
         return null;
     }
@@ -697,7 +697,7 @@ public static class Utils
         }
         catch
         {
-            MalumMenu.Log.LogError($"Failed to read Texture: {path}");
+            EclipseMenu.Log.LogError($"Failed to read Texture: {path}");
         }
         return null;
     }
@@ -705,8 +705,8 @@ public static class Utils
     // Opens the config file in the default text editor
     public static void OpenConfigFile()
     {
-        var configFilePath = MalumMenu.Plugin.Config.ConfigFilePath;
-        var configEditor = MalumMenu.configEditor.Value;
+        var configFilePath = EclipseMenu.Plugin.Config.ConfigFilePath;
+        var configEditor = EclipseMenu.configEditor.Value;
 
         if (!string.IsNullOrWhiteSpace(configEditor))
         {
@@ -724,17 +724,17 @@ public static class Utils
                 }
                 catch (Exception ex)
                 {
-                    MalumMenu.Log.LogError(ex.Message);
+                    EclipseMenu.Log.LogError(ex.Message);
                 }
             }
             else
             {
-                MalumMenu.Log.LogError("Configuration file does not exist");
+                EclipseMenu.Log.LogError("Configuration file does not exist");
             }
         }
         else
         {
-            MalumMenu.Log.LogError("Configuration editor not specified");
+            EclipseMenu.Log.LogError("Configuration editor not specified");
         }
     }
 
@@ -744,7 +744,7 @@ public static class Utils
         public static void Create()
         {
             ClassInjector.RegisterTypeInIl2Cpp<PanicCleaner>();
-            var go = new GameObject("MalumMenu_PanicCleaner");
+            var go = new GameObject("EclipseMenu_PanicCleaner");
             go.hideFlags = HideFlags.HideAndDontSave;
             go.AddComponent<PanicCleaner>();
         }
@@ -753,14 +753,14 @@ public static class Utils
         // This allows some patches to run for a last time and finish properly
         private void LateUpdate()
         {
-            try { Harmony.UnpatchID(MalumMenu.Id); } catch { }
+            try { Harmony.UnpatchID(EclipseMenu.Id); } catch { }
             Destroy(gameObject);
         }
     }
 
     public static void Panic()
     {
-        MalumMenu.isPanicked = true;
+        EclipseMenu.isPanicked = true;
 
         CheatToggles.DisableAll();
 
@@ -774,16 +774,16 @@ public static class Utils
             SceneManager.LoadScene(scene.name);
         }
 
-        UnityEngine.Object.Destroy(MalumMenu.menuUI);
+        UnityEngine.Object.Destroy(EclipseMenu.menuUI);
 
-        UnityEngine.Object.Destroy(MalumMenu.consoleUI);
-        UnityEngine.Object.Destroy(MalumMenu.overloadUI);
-        UnityEngine.Object.Destroy(MalumMenu.doorsUI);
-        UnityEngine.Object.Destroy(MalumMenu.tasksUI);
-        UnityEngine.Object.Destroy(MalumMenu.protectUI);
-        // UnityEngine.Object.Destroy(MalumMenu.rolesUI);
+        UnityEngine.Object.Destroy(EclipseMenu.consoleUI);
+        UnityEngine.Object.Destroy(EclipseMenu.overloadUI);
+        UnityEngine.Object.Destroy(EclipseMenu.doorsUI);
+        UnityEngine.Object.Destroy(EclipseMenu.tasksUI);
+        UnityEngine.Object.Destroy(EclipseMenu.protectUI);
+        // UnityEngine.Object.Destroy(EclipseMenu.rolesUI);
 
-        UnityEngine.Object.Destroy(MalumMenu.keybindListener);
+        UnityEngine.Object.Destroy(EclipseMenu.keybindListener);
 
         PanicCleaner.Create();
     }
