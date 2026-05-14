@@ -7,7 +7,7 @@
     <img hspace="6" src="https://img.shields.io/badge/Join%20Us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
   </a>
   <a href="https://github.com/k3razz/EclipseMenu/releases">
-    <img hspace="6" src="https://img.shields.io/github/downloads/k3razz/EclipseMenu/total?style=flat&logo=github&label=Total%20Downloads&color=2ECC71" alt="Downloads">
+    <img hspace="6" src="https://img.shields.io/github/downloads/k3razz/EclipseMenu/total?style=flat&logo=github&label=Total%20Downloads&color=0375b5" alt="Downloads">
 </p>
 
 <p align="center">
