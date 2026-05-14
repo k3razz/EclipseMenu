@@ -218,9 +218,9 @@ public static class Utils
                 DestroyableSingleton<FriendsListManager>.Instance.SetFriendButtonColor(true);
             }
             if (DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.gameObject.activeSelf)
-                        {
-                                DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
-                        }
+			{
+				DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
+			}
         }
 
     }
@@ -362,7 +362,7 @@ public static class Utils
     {
 
         Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
-                float magnitude = vector.magnitude;
+		float magnitude = vector.magnitude;
 
         return magnitude;
 
@@ -607,13 +607,13 @@ public static class Utils
         var players = PlayerControl.AllPlayerControls.ToArray();
 
         for (int i = 0; i < players.Count; i++)
-                {   NetworkedPlayerInfo playerData = players[i].Data;
+		{   NetworkedPlayerInfo playerData = players[i].Data;
 
-                        if (playerData.ClientId == clientId)
-                        {
-                                return playerData;
-                        }
-                }
+			if (playerData.ClientId == clientId)
+			{
+				return playerData;
+			}
+		}
 
         return null; // Returns null if no matching player is found
     }
