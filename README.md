@@ -2,9 +2,6 @@
   <img src="https://github.com/k3razz/EclipseMenu/blob/main/img/logo.png">
 </p>
 
-# 📌 Updates paused.
-Updates for EclipseMenu paused because of c++ porting (ImGui + StandAlone version)
-
 <p align="center">
   <a href="https://discord.gg/7FKD5gHQzB">
     <img hspace="6" src="https://img.shields.io/badge/Join%20Us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
@@ -16,6 +13,9 @@ Updates for EclipseMenu paused because of c++ porting (ImGui + StandAlone versio
 <p align="center">
   <b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.</b>
 </p>
+
+# 📌 Updates paused.
+Updates for EclipseMenu paused because of c++ porting (ImGui + StandAlone version)
 
 <!-- omit in toc -->
 # 😎 Table Of Contents
