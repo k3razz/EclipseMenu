@@ -15,7 +15,7 @@
 </p>
 
 > [!CAUTION]
-> Updates for EclipseMenu paused because > of c++ porting (ImGui + StandAlone > version)
+> Updates for EclipseMenu paused because  of c++ porting (ImGui + StandAlone version)
 
 <!-- omit in toc -->
 # 😎 Table Of Contents
