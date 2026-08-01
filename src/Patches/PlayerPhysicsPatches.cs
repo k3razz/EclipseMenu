@@ -34,20 +34,31 @@ public static class PlayerPhysics_LateUpdate
 
         // This check ensures there is only one run per frame
         // so that OverloadHandler._timer progression remains accurate
-        if (__instance.AmOwner)
+/*        if (__instance.AmOwner)
         {
             OverloadHandler.Run();
         }
-
+*/
         TracersHandler.DrawPlayerTracer(__instance);
 
         GameObject[] bodyObjects = GameObject.FindGameObjectsWithTag("DeadBody");
         foreach(GameObject bodyObject in bodyObjects) // Finds and loops through all dead bodies
         {
             DeadBody deadBody = bodyObject.GetComponent<DeadBody>();
+            if (!deadBody) continue;
 
-            if (!deadBody || deadBody.Reported) continue;  // Only draw tracers for unreported dead bodies
             TracersHandler.DrawBodyTracer(deadBody);
+
+
+            if (CheatToggles.autoReportBodies)
+            {
+
+                if (deadBody.Reported) continue;
+
+                    deadBody.Reported = true;
+                
+                PlayerControl.LocalPlayer.CmdReportDeadBody(GameData.Instance.GetPlayerById(deadBody.ParentId));
+            }
         }
 
         try

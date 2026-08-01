@@ -178,7 +178,7 @@ public static class Utils
 
         foreach (var item in PlayerControl.AllPlayerControls)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, AmongUsClient.Instance.GetClientIdFromCharacter(item));
             writer.WriteNetObject(target);
             writer.Write((int)result);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -199,7 +199,7 @@ public static class Utils
         if (task.IsComplete) return;
         foreach (var item in PlayerControl.AllPlayerControls)
         {
-            var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+            var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.Reliable, AmongUsClient.Instance.GetClientIdFromCharacter(item));
             messageWriter.WritePacked(task.Id);
             AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
         }
@@ -676,7 +676,7 @@ public static class Utils
         }
         catch
         {
-            .Log.LogError($"Failed to read Texture: {path}");
+            EclipseMenu.Log.LogError($"Failed to read Texture: {path}");
         }
         return null;
     }
@@ -777,7 +777,7 @@ public static class Utils
         UnityEngine.Object.Destroy(EclipseMenu.menuUI);
 
         UnityEngine.Object.Destroy(EclipseMenu.consoleUI);
-        UnityEngine.Object.Destroy(EclipseMenu.overloadUI);
+        //UnityEngine.Object.Destroy(EclipseMenu.overloadUI);
         UnityEngine.Object.Destroy(EclipseMenu.doorsUI);
         UnityEngine.Object.Destroy(EclipseMenu.tasksUI);
         UnityEngine.Object.Destroy(EclipseMenu.protectUI);

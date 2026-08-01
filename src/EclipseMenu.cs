@@ -28,8 +28,8 @@ public partial class EclipseMenu : BasePlugin
     public static ProtectUI protectUI;
     public static KeybindListener keybindListener;
 
-    public static string EclipseVersion = "1.4.3";
-    public static List<string> supportedAU = new List<string> { "2026.3.31" };
+    public static string EclipseVersion = "1.4.4";
+    public static List<string> supportedAU = new List<string> { "2026.6.5","2026.3.31" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
 
@@ -128,7 +128,7 @@ public partial class EclipseMenu : BasePlugin
                                     new AcceptableValueRange<int>(1, 1000)
                                 ));
 
-        adaptMaxCooldown = Config.Bind("EclipseMenu.Overload",
+/*        adaptMaxCooldown = Config.Bind("EclipseMenu.Overload",
                                 "AdaptMaxCooldown",
                                 1f,
                                 new ConfigDescription(
@@ -165,7 +165,7 @@ public partial class EclipseMenu : BasePlugin
                                     new AcceptableValueRange<int>(1, 6)
                                 ));
 
-        // Enabled by default
+*/      // Enabled by default
         CheatToggles.unlockFeatures = true;
         CheatToggles.freeCosmetics = true;
         CheatToggles.avoidPenalties = true;
@@ -185,7 +185,7 @@ public partial class EclipseMenu : BasePlugin
         // UI
         menuUI = AddComponent<MenuUI>();
         consoleUI = AddComponent<ConsoleUI>();
-        overloadUI = AddComponent<OverloadUI>();
+        // overloadUI = AddComponent<OverloadUI>();
         doorsUI = AddComponent<DoorsUI>();
         tasksUI = AddComponent<TasksUI>();
         protectUI = AddComponent<ProtectUI>();
