@@ -32,6 +32,7 @@
 
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v1.4.4 | 17.4 ( 2026.6.5 )<br> 17.3 ( 2026.3.31 ) | [Download](https://github.com/k3razz/EclipseMenu/releases/tag/v1.4.4) |
 | v1.4.3 | 17.3 ( 2026.3.31 ) | [Download](https://github.com/k3razz/EclipseMenu/releases/tag/v1.4.3) |
 | v1.4.2 | 17.3 ( 2026.3.31 ) | [Download](https://github.com/k3razz/EclipseMenu/releases/tag/v1.4.2) |
 | v1.4.1 | 17.3 ( 2026.3.31 ) | [Download](https://github.com/k3razz/EclipseMenu/releases/tag/v1.4.1) |
