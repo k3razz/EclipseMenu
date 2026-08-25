@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "AmongUs.GameLibs.Steam/2026.3.31": {
+      "AmongUs.GameLibs.Steam/2026.8.18": {
         "type": "package",
         "build": {
           "build/AmongUs.GameLibs.Steam.props": {}
@@ -1360,13 +1360,13 @@
     }
   },
   "libraries": {
-    "AmongUs.GameLibs.Steam/2026.3.31": {
-      "sha512": "s5u9TPftqfgvDKBCJ6LCSbWMVLIP2U9++UglnQ7pFa/o9RFo++6vevsX3im+cbpoyznjoj64q2aqLwu7wbkqig==",
+    "AmongUs.GameLibs.Steam/2026.8.18": {
+      "sha512": "sSGu2zGYvLboOc83PzPxQ0yGsK1YrhIO/538Tfzc/5FKfEbGCtCQErcKV0wdiYZCHGpCe561RzzfrBtp46jcgQ==",
       "type": "package",
-      "path": "amongus.gamelibs.steam/2026.3.31",
+      "path": "amongus.gamelibs.steam/2026.8.18",
       "files": [
         ".nupkg.metadata",
-        "amongus.gamelibs.steam.2026.3.31.nupkg.sha512",
+        "amongus.gamelibs.steam.2026.8.18.nupkg.sha512",
         "amongus.gamelibs.steam.nuspec",
         "build/AddressablesPlayAssetDelivery.dll",
         "build/AmongUs.GameLibs.Steam.props",
@@ -1404,11 +1404,9 @@
         "build/System.Xml.dll",
         "build/System.dll",
         "build/Unity.Addressables.dll",
-        "build/Unity.Analytics.DataPrivacy.dll",
         "build/Unity.LevelPlay.dll",
         "build/Unity.ProBuilder.dll",
         "build/Unity.ResourceManager.dll",
-        "build/Unity.Services.Analytics.dll",
         "build/Unity.Services.Core.Configuration.dll",
         "build/Unity.Services.Core.Device.dll",
         "build/Unity.Services.Core.Environments.Internal.dll",
@@ -1451,7 +1449,6 @@
         "build/UnityEngine.UI.dll",
         "build/UnityEngine.UIElementsModule.dll",
         "build/UnityEngine.UIModule.dll",
-        "build/UnityEngine.UnityAnalyticsCommonModule.dll",
         "build/UnityEngine.UnityAnalyticsModule.dll",
         "build/UnityEngine.UnityWebRequestAssetBundleModule.dll",
         "build/UnityEngine.UnityWebRequestModule.dll",
@@ -4600,7 +4597,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "AmongUs.GameLibs.Steam >= 2026.3.31",
+      "AmongUs.GameLibs.Steam >= 2026.7.15",
       "BepInEx.AutoPlugin >= 1.1.0",
       "BepInEx.IL2CPP.MSBuild >= 2.1.0-rc.1",
       "BepInEx.Unity.IL2CPP >= 6.0.0-be.735"
@@ -4610,7 +4607,7 @@
     "C:\\Users\\Саша\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.4.3",
+    "version": "1.5.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\Саша\\Documents\\GitHub\\EclipseMenu\\src\\EclipseMenu.csproj",
       "projectName": "EclipseMenu",
@@ -4656,7 +4653,7 @@
           "AmongUs.GameLibs.Steam": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[2026.3.31, )"
+            "version": "[2026.7.15, )"
           },
           "BepInEx.AutoPlugin": {
             "suppressParent": "All",
@@ -4694,5 +4691,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "EclipseMenu depends on AmongUs.GameLibs.Steam (>= 2026.7.15) but AmongUs.GameLibs.Steam 2026.7.15 was not found. AmongUs.GameLibs.Steam 2026.8.18 was resolved instead.",
+      "libraryId": "AmongUs.GameLibs.Steam",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }
