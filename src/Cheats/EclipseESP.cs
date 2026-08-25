@@ -54,13 +54,8 @@ public static class EclipseESP
     {
         if (CheatToggles.zoomOut)
         {
-            if (hudManager.Chat.IsOpenOrOpening ||
-                PlayerCustomizationMenu.Instance ||
-                (Utils.isLobby &&
-                (FriendsListUI.Instance.IsOpen ||
-                 GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active ||
-                 GameStartManager.Instance.RulesEditPanel)))
-                return;
+            if (hudManager.Chat.IsOpenOrOpening || MatchInfoGuide.Instance.IsActive || PlayerCustomizationMenu.Instance ||
+            (Utils.isLobby && (FriendsListUI.Instance.IsOpen || GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active || GameStartManager.Instance.RulesEditPanel))) return;
 
             _resolutionChangeNeeded = true;
 
