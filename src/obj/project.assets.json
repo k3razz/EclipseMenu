@@ -4610,7 +4610,7 @@
     "C:\\Users\\Саша\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.4.2",
+    "version": "1.4.3",
     "restore": {
       "projectUniqueName": "C:\\Users\\Саша\\Documents\\GitHub\\EclipseMenu\\src\\EclipseMenu.csproj",
       "projectName": "EclipseMenu",

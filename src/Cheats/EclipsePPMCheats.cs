@@ -90,7 +90,7 @@ public static class EclipsePPMCheats
                 PlayerPickMenu.OpenPlayerPickMenu(playerInfo, (Action)(() =>
                 {
                     NetworkedPlayerInfo playerToEject = PlayerPickMenu.targetPlayerData;
-                    MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), playerToEject, false);
+                    MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), playerToEject, false, false, ushort.MinValue);
                 }));
 
                 _ejectPlayerActive = true;

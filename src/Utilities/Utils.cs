@@ -32,8 +32,8 @@ public static class Utils
     public static bool isHost => AmongUsClient.Instance && AmongUsClient.Instance.AmHost;
     public static bool isInGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && isPlayer;
     public static bool isMeeting => MeetingHud.Instance;
-    public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
-    public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
+    public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.MeetingStates.Voted or MeetingHud.MeetingStates.NotVoted;
+    public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.MeetingStates.Proceeding;
     public static bool isExiling => ExileController.Instance && !(isAirshipMap && SpawnInMinigame.Instance.isActiveAndEnabled);
     public static bool isAnySabotageActive => ShipStatus.Instance && SabotageSystem.AnyActive;
     public static bool isNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
@@ -218,9 +218,9 @@ public static class Utils
                 DestroyableSingleton<FriendsListManager>.Instance.SetFriendButtonColor(true);
             }
             if (DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.gameObject.activeSelf)
-			{
-				DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
-			}
+            {
+                DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
+            }
         }
 
     }
@@ -362,7 +362,7 @@ public static class Utils
     {
 
         Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
-		float magnitude = vector.magnitude;
+        float magnitude = vector.magnitude;
 
         return magnitude;
 
@@ -450,7 +450,7 @@ public static class Utils
     public static KeyCode StringToKeycode(string keyCodeStr)
     {
 
-        if(!string.IsNullOrEmpty(keyCodeStr)) // Empty strings are automatically invalid
+        if (!string.IsNullOrEmpty(keyCodeStr)) // Empty strings are automatically invalid
         {
             try
             {
@@ -478,7 +478,8 @@ public static class Utils
                 platform = (Platforms)Enum.Parse(typeof(Platforms), platformStr, true);
 
                 return true; // If platform type is valid, return false
-            }catch{}
+            }
+            catch { }
         }
 
         platform = null;
@@ -607,13 +608,14 @@ public static class Utils
         var players = PlayerControl.AllPlayerControls.ToArray();
 
         for (int i = 0; i < players.Count; i++)
-		{   NetworkedPlayerInfo playerData = players[i].Data;
+        {
+            NetworkedPlayerInfo playerData = players[i].Data;
 
-			if (playerData.ClientId == clientId)
-			{
-				return playerData;
-			}
-		}
+            if (playerData.ClientId == clientId)
+            {
+                return playerData;
+            }
+        }
 
         return null; // Returns null if no matching player is found
     }
