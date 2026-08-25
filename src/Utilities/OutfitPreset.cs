@@ -71,4 +71,10 @@ public static class OutfitPreset
     {
         ColorId = 10
     };
+
+    public static NetworkedPlayerInfo.PlayerOutfit Judge = new()
+    {
+        ColorId = 10,
+        HatId = "hat_wigJudge",
+    };
 }
